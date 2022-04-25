@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
-const io = require('socket.io')();
-const port = 3000;
+const http = require('http').createServer(app)
+const io = require('socket.io')(http);
 
 io.on('connection', (socket) => {
     console.log('a user connected');
@@ -14,4 +14,6 @@ io.on('connection', (socket) => {
     });
 });
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+http.listen(4000, () => {
+    console.log('listening on *:4000');
+});
