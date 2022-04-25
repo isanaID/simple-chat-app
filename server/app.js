@@ -1,24 +1,17 @@
 const express = require('express');
 const app = express();
-const http = require('http').createServer(app)
-const io = require("socket.io")(http, {
-  cors: {
-    origin: "http://localhost:4000",
-    methods: ["GET", "POST"],
-    allowedHeaders: ["my-custom-header"],
-    credentials: true
-  }
-});
+const http = require('http');
+const { Server } = require('socket.io');
+const cors = require('cors');
 
-io.on('connection', (socket) => {
-    console.log('a user connected');
-    socket.on('disconnect', () => {
-        console.log('user disconnected');
-    });
-    socket.on('message', ({ name, message}) => {
-        console.log(`${name}: ${message}`);
-        io.emit('message', { name, message });
-    });
+app.use(cors());
+const server = http.createServer(app);
+
+const io = new Server(server, {
+    cors: {
+        origin: 'http://localhost:3000',
+        methods: ["GET", "POST", "OPTIONS"],
+    },
 });
 
 http.listen(4000, () => {
