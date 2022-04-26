@@ -24,6 +24,14 @@ io.on("connection", (socket) => {
     socket.on("send_message", (data) => {
         socket.to(data.room).emit("receive_message", data);
     });
+
+    socket.on("disconnect", () => {
+        console.log(`User Disconnected: ${socket.id}`);
+    });
+
+    socket.on("error", (error) => {
+        console.log(`Error: ${error}`);
+    });
 });
 
 server.listen(4000, () => {
