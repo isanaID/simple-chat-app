@@ -1,71 +1,48 @@
-import TextField from "@material-ui/core/TextField"
-import React, { useEffect, useRef, useState } from "react"
+import * as React from "react"
 import io from "socket.io-client"
 import "./App.css"
 
+const socket = io.connect("http://localhost:4000");
+
 function App() {
-	const [ state, setState ] = useState({ message: "", name: "" })
-	const [ chat, setChat ] = useState([])
+	const [room, setRoom] = React.useState("")
+	const [message, setMessage] = React.useState("")
+	const [messageReceived, setMessageReceived] = React.useState("")
 
-	const socketRef = useRef()
+	const joinRoom = () => {
+		socket.emit("join_room", room)
+	};
 
-	useEffect(
-		() => {
-			socketRef.current = io.connect("http://localhost:4000")
-			socketRef.current.on("message", ({ name, message }) => {
-				setChat([ ...chat, { name, message } ])
-			})
-			return () => socketRef.current.disconnect()
-		},
-		[ chat ]
-	)
+	const sendMessage = () => {
+		socket.emit("send_message", { message, room });
+	};
 
-	const onTextChange = (e) => {
-		setState({ ...state, [e.target.name]: e.target.value })
-	}
-
-	const onMessageSubmit = (e) => {
-		const { name, message } = state
-		socketRef.current.emit("message", { name, message })
-		e.preventDefault()
-		setState({ message: "", name })
-	}
-
-	const renderChat = () => {
-		return chat.map(({ name, message }, index) => (
-			<div key={index}>
-				<h3>
-					{name}: <span>{message}</span>
-				</h3>
-			</div>
-		))
-	}
+	React.useEffect(() => {
+		socket.on("receive_message", (data) => {
+			setMessageReceived(data.message);
+		});
+	}, []);
 
 	return (
-		<div className="card">
-			<form onSubmit={onMessageSubmit}>
-				<h1>Messenger</h1>
-				<div className="name-field">
-					<TextField name="name" onChange={(e) => onTextChange(e)} value={state.name} label="Name" />
-				</div>
-				<div>
-					<TextField
-						name="message"
-						onChange={(e) => onTextChange(e)}
-						value={state.message}
-						id="outlined-multiline-static"
-						variant="outlined"
-						label="Message"
-					/>
-				</div>
-				<button>Send Message</button>
-			</form>
-			<div className="render-chat">
-				<h1>Chat Log</h1>
-				{renderChat()}
-			</div>
+		<div className="App">
+			<h1>Chat App</h1>
+			<input
+				type="text"
+				placeholder="Room"
+				value={room}
+				onChange={(e) => setRoom(e.target.value)}
+			/>
+			<button onClick={joinRoom}>Join</button>
+			<input
+				type="text"
+				placeholder="Message"
+				value={message}
+				onChange={(e) => setMessage(e.target.value)}
+			/>
+			<button onClick={sendMessage}>Send</button>
+			<p>{messageReceived}</p>
 		</div>
-	)
+	);
 }
 
-export default App
+export default App;

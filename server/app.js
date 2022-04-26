@@ -14,6 +14,18 @@ const io = new Server(server, {
     },
 });
 
-http.listen(4000, () => {
+io.on("connection", (socket) => {
+    console.log(`User Connected: ${socket.id}`);
+
+    socket.on("join_room", (data) => {
+        socket.join(data);
+    });
+
+    socket.on("send_message", (data) => {
+        socket.to(data.room).emit("receive_message", data);
+    });
+});
+
+server.listen(4000, () => {
     console.log('listening on *:4000');
 });
