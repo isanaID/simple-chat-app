@@ -19,20 +19,10 @@ function App() {
 		}
 	};
 
-	// const sendMessage = () => {
-	// 	socket.emit("send_message", { message, room });
-	// };
-
-	// React.useEffect(() => {
-	// 	socket.on("receive_message", (data) => {
-	// 		setMessageReceived(data.message);
-	// 	});
-	// }, []);
-
 	return (
 		<div className="App">
 			{!showChat? (
-				<div>
+				<div className="joinChatContainer">
 					<h1>Chat App</h1>
 					<input
 						type="text"
@@ -46,23 +36,7 @@ function App() {
 					/>
 					<button onClick={joinRoom}>Join</button>
 				</div>
-					) : (<Chat socket={socket} username={username} room={room} />)};
-			{/* <h1>Chat App</h1>
-			<input
-				type="text"
-				placeholder="Room"
-				value={room}
-				onChange={(e) => setRoom(e.target.value)}
-			/>
-			<button onClick={joinRoom}>Join</button>
-			<input
-				type="text"
-				placeholder="Message"
-				value={message}
-				onChange={(e) => setMessage(e.target.value)}
-			/>
-			<button onClick={sendMessage}>Send</button>
-			<p>{messageReceived}</p> */}
+					) : (<Chat socket={socket} username={username} room={room} />)}
 		</div>
 	);
 }

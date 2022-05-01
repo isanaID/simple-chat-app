@@ -32,7 +32,7 @@ function Chat({ socket, username, room }) {
   return (
     <div className="chat-window">
       <div className="chat-header">
-        <p>Live Chat</p>
+        <p>Hello {username} Welcome to Room {room}</p>
       </div>
       <div className="chat-body">
         <ScrollToBottom className="message-container">
@@ -71,7 +71,7 @@ function Chat({ socket, username, room }) {
         <button onClick={sendMessage}>&#9658;</button>
       </div>
     </div>
-  );
+  )
 }
 
 export default Chat;
