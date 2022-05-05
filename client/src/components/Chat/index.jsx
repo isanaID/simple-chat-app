@@ -1,4 +1,5 @@
 import * as React from "react";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import ScrollToBottom from "react-scroll-to-bottom";
 
 function Chat({ socket, username, room }) {
@@ -23,13 +24,20 @@ function Chat({ socket, username, room }) {
     }
   };
 
-  React.useEffect(() => {
+  const receivedMessage = (data) => {
     socket.on("receive_message", (data) => {
       setMessageList((list) => [...list, data]);
     });
-  }, [socket]);
+    console.log(`func running`);
+  }
+
+  React.useEffect(() => {
+    receivedMessage();
+    console.log(`effect running`);
+  }, [username]);
 
   return (
+    <div className="d-flex align-items-center">
     <div className="chat-window">
       <div className="chat-header">
         <p>Hello {username} Welcome to Room {room}</p>
@@ -48,7 +56,7 @@ function Chat({ socket, username, room }) {
                   </div>
                   <div className="message-meta">
                     <p id="time">{messageContent.time}</p>
-                    <p id="author">{messageContent.author}</p>
+                    <p id="author">by {messageContent.author}</p>
                   </div>
                 </div>
               </div>
@@ -70,6 +78,7 @@ function Chat({ socket, username, room }) {
         />
         <button onClick={sendMessage}>&#9658;</button>
       </div>
+    </div>
     </div>
   )
 }

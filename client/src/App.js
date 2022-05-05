@@ -1,7 +1,9 @@
 import * as React from "react"
 import io from "socket.io-client"
+import NavBar from "./components/Nav";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import "./App.css"
-import Chat from "./Chat";
+import Chat from "./components/Chat";
 
 const socket = io.connect("http://localhost:4000");
 
@@ -21,8 +23,9 @@ function App() {
 
 	return (
 		<div className="App">
+			<NavBar />
 			{!showChat? (
-				<div className="joinChatContainer">
+				<div className="d-flex align-items-center joinChatContainer">
 					<h1>Chat App</h1>
 					<input
 						type="text"
