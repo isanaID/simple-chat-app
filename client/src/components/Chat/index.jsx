@@ -32,9 +32,10 @@ function Chat({ socket, username, room }) {
   }
 
   React.useEffect(() => {
+
     receivedMessage();
     console.log(`effect running`);
-  }, [username]);
+  }, [socket]);
 
   return (
     <div className="d-flex align-items-center">

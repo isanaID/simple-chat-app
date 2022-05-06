@@ -17,6 +17,11 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
     console.log(`User Connected: ${socket.id}`);
 
+    // socket.on("user_connected", (data) => {
+    //     console.log(`User Connected: ${data.username}`);
+    //     socket.broadcast.emit("user_connected", data);
+    // });
+
     socket.on("join_room", (data) => {
         socket.join(data);
     });
