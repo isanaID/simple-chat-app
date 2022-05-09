@@ -30,6 +30,12 @@ function App() {
 		}
 	};
 
+	let changeUsername = () => {
+		localStorage.removeItem("username");
+		setUsername("");
+		setShowRoom(false);
+	}
+
 	React.useEffect(() => {
 		fillUsername();
 	}, [showChat]);
@@ -51,6 +57,7 @@ function App() {
 				</div>
 			) : !showChat? (
 				<div className="d-flex align-items-center joinChatContainer">
+					<h1>Hello {username}</h1> <a href="#" onClick={changeUsername}>Change Username</a>
 					<h1>Choose Room</h1>
 					{/* <input
 						type="text"
