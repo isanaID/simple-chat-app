@@ -8,11 +8,20 @@ import Chat from "./components/Chat";
 const socket = io.connect("http://localhost:4000");
 
 function App() {
-	const [username, setUsername] = React.useState("");
+	const [username, setUsername] = React.useState((localStorage.getItem("username")));
 	const [room, setRoom] = React.useState("");
 	const [showChat, setShowChat] = React.useState(false);
+	const [showRoom, setShowRoom] = React.useState(false);
 	// const [message, setMessage] = React.useState("")
 	// const [messageReceived, setMessageReceived] = React.useState("")
+
+	let fillUsername = () => {
+		if(username !== "") {
+			setRoom("");
+			localStorage.setItem("username", username);
+			setShowRoom(true);
+		}
+	};
 
 	const joinRoom = () => {
 		if(username !== "" && room !== "") {
@@ -21,19 +30,37 @@ function App() {
 		}
 	};
 
+	React.useEffect(() => {
+		fillUsername();
+	}, [showChat]);
+
 	return (
 		<div className="App">
 			<NavBar />
-			{!showChat? (
+			{!showRoom? (
 				<div className="d-flex align-items-center joinChatContainer">
-					<h1>Chat App</h1>
-					<input
+				<h1>set username</h1>
+				<input
+					type="text"
+					autoComplete="off"
+					id="username"
+					placeholder="Username"
+					onChange={(e) => setUsername(e.target.value)}
+				/>
+				<button onClick={fillUsername}>Next</button>
+				</div>
+			) : !showChat? (
+				<div className="d-flex align-items-center joinChatContainer">
+					<h1>Choose Room</h1>
+					{/* <input
 						type="text"
 						placeholder="Username"
 						onChange={(e) => setUsername(e.target.value)}
-					/>
+					/> */}
 					<input
 						type="text"
+						autoComplete="off"
+						id="room"
 						placeholder="Room"
 						onChange={(e) => setRoom(e.target.value)}
 					/>
