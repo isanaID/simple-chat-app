@@ -17,7 +17,6 @@ function App() {
 
 	let fillUsername = () => {
 		if(username !== "") {
-			setRoom("");
 			localStorage.setItem("username", username);
 			setShowRoom(true);
 		}
